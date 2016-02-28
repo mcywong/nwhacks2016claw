@@ -15,23 +15,24 @@ public class GroundHit : MonoBehaviour
     }
 
     // Update is called once per frame
-    void OnCollisionEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("FreezeBlue"))
         {
             blueOn = true;
-            Destroy(other);
+            Destroy(other.gameObject);
         }
 
         else if (other.gameObject.CompareTag("TimeGreen"))
         {
             greenOn = true;
-            Destroy(other);
+            other.gameObject.SetActive(false);
+            //Destroy(other);
         }
         else
         {
             redOn = true;
-            Destroy(other);
+            Destroy(other.gameObject);
         }
 
         if (other.gameObject.tag == "PurplePlatform" || other.gameObject.tag == "DropZone")

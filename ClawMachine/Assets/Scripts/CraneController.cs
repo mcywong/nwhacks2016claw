@@ -3,6 +3,7 @@ using System.Collections;
 
 public class CraneController : MonoBehaviour
 {
+
     public GameObject craneClosed;
     public float downSpeed, upSpeed, maxHeight;
     private Rigidbody rb;
