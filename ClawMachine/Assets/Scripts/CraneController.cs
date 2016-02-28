@@ -63,7 +63,7 @@ public class CraneController : MonoBehaviour
         rb.GetComponent<Renderer>().enabled = true;
         craneClosed.SetActive(false);
         rb.detectCollisions = false;
-        other.transform.parent = null;
+        other.gameObject.transform.parent = null;
         other.rigidbody.isKinematic = false;
         stop();
     }

@@ -35,7 +35,9 @@ public class DropZone : MonoBehaviour
       //  Debug.Log(cowboyCount);
       //  Debug.Log(armyCount);
         destroyed++;
-      //  Debug.Log(destroyed);
+        //  Debug.Log(destroyed);
+
+        if(fallThrough.tag != "Claw") 
         Destroy(fallThrough, 1);
     }
 

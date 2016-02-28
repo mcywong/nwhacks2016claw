@@ -36,6 +36,7 @@ public class MyoCraneController : MonoBehaviour
     // Update is called once per frame.
     void Update()
     {
+        string input = Input.inputString;
         // Access the ThalmicMyo component attached to the Myo game object.
         ThalmicMyo thalmicMyo = myo.GetComponent<ThalmicMyo>();
 
@@ -45,29 +46,8 @@ public class MyoCraneController : MonoBehaviour
         {
             lastTime = currentTime;
             // Vibrate the Myo armband when a fist is made.
-            if (thalmicMyo.pose == Pose.Fist)
+            if (thalmicMyo.pose == Pose.Fist || input == "c")
             {
-                transform.Translate(10, 0, 0);
-                ExtendUnlockAndNotifyUserAction(thalmicMyo);
-            }
-            else if (thalmicMyo.pose == Pose.FingersSpread)
-            {
-                transform.Translate(-10, 0, 0);
-                ExtendUnlockAndNotifyUserAction(thalmicMyo);
-            }
-            else if (thalmicMyo.pose == Pose.WaveIn)
-            {
-                transform.Translate(0, 0, -10);
-                ExtendUnlockAndNotifyUserAction(thalmicMyo);
-            }
-            else if (thalmicMyo.pose == Pose.WaveOut)
-            {
-                transform.Translate(0, 0, 10);
-                ExtendUnlockAndNotifyUserAction(thalmicMyo);
-            }
-            else if (thalmicMyo.pose == Pose.DoubleTap)
-            {
-                Debug.Log("doubleTap");
                 if (pickedUp)
                 {
                     Debug.Log("Picked Up");
@@ -82,6 +62,27 @@ public class MyoCraneController : MonoBehaviour
                     normal();
                     ExtendUnlockAndNotifyUserAction(thalmicMyo);
                 }
+                
+                ExtendUnlockAndNotifyUserAction(thalmicMyo);
+            }
+            else if (thalmicMyo.pose == Pose.FingersSpread || input == "s")
+            {
+                transform.Translate(10, 0, 0);
+                ExtendUnlockAndNotifyUserAction(thalmicMyo);
+            }
+            else if (thalmicMyo.pose == Pose.WaveIn || input == "a")
+            {
+                transform.Translate(0, 0, -10);
+                ExtendUnlockAndNotifyUserAction(thalmicMyo);
+            }
+            else if (thalmicMyo.pose == Pose.WaveOut || input == "d")
+            {
+                transform.Translate(0, 0, 10);
+                ExtendUnlockAndNotifyUserAction(thalmicMyo);
+            }
+            else if (thalmicMyo.pose == Pose.DoubleTap || input == "w")
+            {
+                transform.Translate(-10, 0, 0);
             }
             else
             {
@@ -101,11 +102,7 @@ public class MyoCraneController : MonoBehaviour
         rb.isKinematic = true;
         GameObject grabbed = other.gameObject;
         Debug.Log(grabbed.tag.ToString());
-        if(grabbed.CompareTag("Soldier") || grabbed.CompareTag("Cowboy"))
-        {
-
-            pickedUp = true;
-        }
+        pickedUp = true;
 
         other.rigidbody.isKinematic = true;
         grabbed.transform.parent = this.transform;
