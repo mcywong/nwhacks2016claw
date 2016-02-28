@@ -13,6 +13,8 @@ public class MyoCraneController : MonoBehaviour
     private Rigidbody rb;
     private int count = 0;
     private Collision collision;
+    private bool isRising = false;
+    private bool pickedUp = false;
 
     // Myo game object to connect with.
     // This object must have a ThalmicMyo script attached.
@@ -39,7 +41,7 @@ public class MyoCraneController : MonoBehaviour
 
         float currentTime = Time.time;
 
-        if (currentTime - lastTime > 0.75)
+        if (currentTime - lastTime > 0.75 && isRising == false)
         {
             lastTime = currentTime;
             // Vibrate the Myo armband when a fist is made.
@@ -65,8 +67,18 @@ public class MyoCraneController : MonoBehaviour
             }
             else if (thalmicMyo.pose == Pose.DoubleTap)
             {
-                normal();
-                ExtendUnlockAndNotifyUserAction(thalmicMyo);
+                if (pickedUp)
+                {
+                    if (collision != null)
+                    {
+                        dropObject(collision);
+                    }
+                }
+                else
+                {
+                    normal();
+                    ExtendUnlockAndNotifyUserAction(thalmicMyo);
+                }
             }
             else
             {
@@ -75,28 +87,6 @@ public class MyoCraneController : MonoBehaviour
         }
     }
 
-    /*
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        string input = Input.inputString;
-        if (input == "z")
-        {
-            normal();
-        }
-        else if (input == "x")
-        {
-            stop();
-        }
-        else if (input == "c")
-        {
-            if (collision != null)
-            {
-                dropObject(collision);
-            }
-        }
-    }
-    */
 
     void OnCollisionEnter(Collision other)
     {
@@ -107,6 +97,13 @@ public class MyoCraneController : MonoBehaviour
         Vector3 up = new Vector3(0.0f, 1.0f, 0.0f);
         rb.isKinematic = true;
         GameObject grabbed = other.gameObject;
+
+        if(grabbed.CompareTag("Soldier") || grabbed.CompareTag("Cowboy"))
+        {
+
+            pickedUp = true;
+        }
+
         other.rigidbody.isKinematic = true;
         grabbed.transform.parent = this.transform;
         rb.isKinematic = false;
@@ -119,6 +116,7 @@ public class MyoCraneController : MonoBehaviour
 
     void dropObject(Collision other)
     {
+        pickedUp = false;
         rb.GetComponent<Renderer>().enabled = true;
         craneClosed.SetActive(false);
         rb.detectCollisions = false;
@@ -128,11 +126,13 @@ public class MyoCraneController : MonoBehaviour
     }
     void normal()
     {
+        isRising = true;
         rb.useGravity = true;
         rb.isKinematic = false;
         rb.detectCollisions = true;
         Vector3 down = new Vector3(0.0f, -1.0f, 0.0f);
         rb.AddForce(down * downSpeed);
+        
     }
     void stop()
     {
@@ -156,4 +156,6 @@ public class MyoCraneController : MonoBehaviour
 
         myo.NotifyUserAction();
     }
+
+
 }
