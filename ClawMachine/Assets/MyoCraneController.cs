@@ -67,11 +67,14 @@ public class MyoCraneController : MonoBehaviour
             }
             else if (thalmicMyo.pose == Pose.DoubleTap)
             {
+                Debug.Log("doubleTap");
                 if (pickedUp)
                 {
+                    Debug.Log("Picked Up");
                     if (collision != null)
                     {
                         dropObject(collision);
+                        Debug.Log("Dropped");
                     }
                 }
                 else
@@ -97,7 +100,7 @@ public class MyoCraneController : MonoBehaviour
         Vector3 up = new Vector3(0.0f, 1.0f, 0.0f);
         rb.isKinematic = true;
         GameObject grabbed = other.gameObject;
-
+        Debug.Log(grabbed.tag.ToString());
         if(grabbed.CompareTag("Soldier") || grabbed.CompareTag("Cowboy"))
         {
 
