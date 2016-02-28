@@ -132,6 +132,7 @@ public class MyoCraneController : MonoBehaviour
         rb.detectCollisions = true;
         Vector3 down = new Vector3(0.0f, -1.0f, 0.0f);
         rb.AddForce(down * downSpeed);
+        isRising = false;
         
     }
     void stop()
